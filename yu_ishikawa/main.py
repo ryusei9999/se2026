@@ -9,6 +9,11 @@ def load_tasks():
     with open(DATA_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
+def renumber_tasks(tasks):
+    for i, t in enumerate(tasks, start=1):
+        t["id"]=i
+    return tasks
+
 def save_tasks(tasks):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(tasks, f, ensure_ascii=False, indent=2)
@@ -88,6 +93,9 @@ def toggle_status(tasks):
 
 def main():
     tasks = load_tasks()
+    tasks =renumber_tasks(tasks)
+    save_tasks(tasks)
+    
     while True:
         print("=== タスク管理 CLI ===")
         print("1. タスク一覧")
@@ -97,6 +105,7 @@ def main():
         print("5. 完了状態の変更")
         print("0. 終了")
         choice = input("番号を選択： ")
+        
         if choice == "1":
             list_tasks(tasks)
         elif choice == "2":
